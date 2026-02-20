@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pinguin Druck - Druck- und Medienindustrie</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Inter',sans-serif; background:#f8fafc; color:#0f172a; }
+    :root{
+      --primary:#003264;
+      --primary-dark:#002244;
+      --primary-light:#e6f0ff;
+      --bg:#f8fafc;
+      --surface:#ffffff;
+      --text:#0f172a;
+      --text-muted:#64748b;
+    }
+    /* Animations */
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeInDown{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes scaleIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    @keyframes shimmer{0%{left:-100%}100%{left:100%}}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+    /* Layout */
+    .container{max-width:1200px;margin:auto;padding:0 24px;}
+    section{padding:100px 0;}
+    h1{font-size:clamp(2.5rem,5vw,4rem);font-weight:800;line-height:1.1;color:var(--text);letter-spacing:-0.02em;}
+    h2{font-size:clamp(2rem,4vw,3rem);font-weight:700;color:var(--text);letter-spacing:-0.01em;}
+    p{font-size:1.125rem;line-height:1.7;color:var(--text-muted);}
+    .badge{display:inline-block;padding:12px 28px;border-radius:50px;background:var(--primary-light);color:var(--primary);font-weight:600;font-size:0.9rem;margin-bottom:24px;}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
+    @media(max-width:900px){.grid-3{grid-template-columns:1fr;}}
+    /* Header */
+    header{position:sticky;top:0;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,0.08);z-index:1000;}
+    .logo{font-weight:800;font-size:1.5rem;color:var(--primary);}
+    nav ul{display:flex;gap:32px;list-style:none;}
+    nav a{color:var(--text);text-decoration:none;font-weight:500;transition:color .3s;}
+    nav a:hover{color:var(--primary);}
+    .cta-btn{background:var(--primary);color:#fff;padding:12px 24px;border-radius:50px;font-weight:600;transition:all .3s;}
+    .cta-btn:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.15);}
+    /* Hero */
+    .hero{position:relative;overflow:hidden;border-radius:28px;box-shadow:0 30px 80px rgba(0,0,0,0.18),0 0 0 1px rgba(0,0,0,0.05);}
+    .hero img{width:100%;display:block;transition:transform .7s cubic-bezier(0.4,0,0.2,1);}
+    .hero img:hover{transform:scale(1.05);}
+    .hero-image::before{content:'';position:absolute;bottom:0;left:0;right:0;height:50%;background:linear-gradient(to top,rgba(0,0,0,0.4),transparent);z-index:1;}
+    .hero-image::after{content:'';position:absolute;top:0;left:0;right:0;height:40%;background:linear-gradient(to bottom,rgba(255,255,255,0.15),transparent);z-index:2;}
+    .hero-content{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;max-width:600px;}
+    .hero-content h1{margin-bottom:16px;color:var(--text);}
+    .hero-content p{margin-bottom:24px;color:var(--text-muted);}
+    .hero-content .btn-primary{margin-right:16px;}
+    .hero-content .badge{animation:fadeInDown .6s ease .1s backwards;}
+    .hero-content h1{animation:fadeInUp .8s ease .2s backwards;}
+    .hero-content p{animation:fadeInUp .8s ease .3s backwards;}
+    .hero-content .btn{animation:fadeInUp .8s ease .4s backwards;}
+    .hero-image{animation:scaleIn 1s ease .4s backwards;}
+    /* Trust Bar */
+    .trust-bar{display:flex;justify-content:center;gap:24px;margin:48px 0;}
+    .trust-item{text-align:center;flex:1;}
+    .trust-item i{font-size:2rem;color:var(--primary);margin-bottom:12px;}
+    .trust-item span{font-weight:600;color:var(--text);}
+    /* Cards */
+    .card{background:#fff;border-radius:24px;padding:36px;border:1px solid rgba(0,0,0,0.05);box-shadow:0 4px 25px rgba(0,0,0,0.06);transition:all .4s cubic-bezier(0.4,0,0.2,1);}
+    .card:hover{transform:translateY(-12px);box-shadow:0 25px 60px rgba(0,0,0,0.12);}
+    .card-icon{width:70px;height:70px;background:var(--primary-light);border-radius:20px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;}
+    .card-icon i{font-size:1.75rem;color:var(--primary);}
+    .card-title{font-weight:700;color:var(--text);margin-bottom:8px;}
+    .card-text{color:var(--text-muted);font-size:1rem;}
+    .card-3:nth-child(1){animation-delay:.1s;}
+    .card-3:nth-child(2){animation-delay:.2s;}
+    .card-3:nth-child(3){animation-delay:.3s;}
+    .card-3:nth-child(4){animation-delay:.4s;}
+    .card-icon{animation:float 3s ease-in-out infinite;}
+    /* Services Grid */
+    .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:32px;margin-top:48px;}
+    /* Steps */
+    .step{text-align:center;margin-bottom:64px;}
+    .step-number{width:70px;height:70px;background:var(--primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;margin:0 auto 20px;transition:all .3s;}
+    .step-number:hover{transform:scale(1.15);box-shadow:0 15px 40px rgba(0,0,0,0.2);}
+    .step-title{font-weight:700;color:var(--text);margin-bottom:8px;}
+    .step-desc{color:var(--text-muted);font-size:1rem;}
+    /* FAQ */
+    .faq-item{background:#fff;border-radius:20px;padding:28px 32px;margin-bottom:16px;border:1px solid #f1f5f9;transition:all .3s;}
+    .faq-item:hover{transform:translateX(8px);border-left:4px solid var(--primary);box-shadow:0 10px 30px rgba(0,0,0,0.08);}
+    .faq-question{font-weight:600;color:var(--text);cursor:pointer;}
+    .faq-answer{margin-top:12px;color:var(--text-muted);display:none;}
+    .faq-item:hover .faq-answer{display:block;}
+    /* CTA */
+    .cta{background:var(--primary);color:#fff;text-align:center;padding:80px 0;}
+    .cta h2{color:#fff;margin-bottom:24px;}
+    .cta .btn-primary{animation:pulse 2s infinite;}
+    /* Footer */
+    footer{background:#0f172a;color:#cbd5e1;padding:48px 0 24px;text-align:center;font-size:.875rem;}
+    footer a{color:#64748b;text-decoration:none;}
+    footer a:hover{color:#fff;}
+  </style>
+
+<script id="wz-kontakt-script">
+document.addEventListener('DOMContentLoaded', function() {
+  var forms = document.querySelectorAll('form');
+  forms.forEach(function(form) {
+    if (form.__wzBound) return;
+    if (form.querySelector('input[type="email"]') && form.querySelector('textarea')) {
+      form.__wzBound = true;
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var fd = new FormData(form);
+        var data = {
+          name: fd.get('name') || fd.get('Name') || '',
+          email: fd.get('email') || fd.get('Email') || '',
+          phone: fd.get('phone') || fd.get('telefon') || '',
+          message: fd.get('message') || fd.get('nachricht') || '',
+          firma: 'Pinguin Druck',
+          demo_url: window.location.href
+        };
+        var btn = form.querySelector('button[type="submit"], input[type="submit"]');
+        if (btn) btn.disabled = true;
+
+        fetch('https://6aa2-31-17-18-172.ngrok-free.app/webhook/kontakt-formular', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(data)
+        })
+        .then(function(r){ return r.json(); })
+        .then(function(res){
+          alert(res && res.success ? 'Danke! Wir melden uns.' : 'Fehler: ' + (res && res.message ? res.message : 'Unbekannt'));
+          if (res && res.success) form.reset();
+        })
+        .catch(function(){
+          alert('Fehler. Bitte kontakt@agentflowm.de kontaktieren.');
+        })
+        .finally(function(){
+          if (btn) btn.disabled = false;
+        });
+      });
+    }
+  });
+});
+</script>
+
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container flex-between">
+      <div class="logo">Pinguin Druck</div>
+      <nav>
+        <ul>
+          <li><a href="#">Druck</a></li>
+          <li><a href="#">Medien</a></li>
+          <li><a href="#">Berlin</a></li>
+          <li><a href="#">Kontakt</a></li>
+        </ul>
+      </nav>
+      <button class="cta-btn">Jetzt Angebot</button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-content">
+      <div class="badge">Druck- und Medienindustrie Berlin</div>
+      <h1>Innovative Drucklösungen für Ihre Marke</h1>
+      <p>Hochwertige Produktion, schnelle Lieferung und persönlicher Service – alles aus einer Hand.</p>
+      <button class="btn-primary">Jetzt Kontaktieren</button>
+      <button class="btn-primary">Mehr Erfahren</button>
+    </div>
+    <div class="hero-image">
+      <img src="https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=900&h=500&fit=crop" alt="Modernes Druckzentrum">
+    </div>
+  </section>
+
+  <!-- Trust Bar -->
+  <section class="trust-bar">
+    <div class="trust-item"><i class="fas fa-stopwatch"></i><span>Schnell</span></div>
+    <div class="trust-item"><i class="fas fa-shield-alt"></i><span>Sicher</span></div>
+    <div class="trust-item"><i class="fas fa-mobile-alt"></i><span>Flexibel</span></div>
+    <div class="trust-item"><i class="fas fa-handshake"></i><span>Partnerschaft</span></div>
+  </section>
+
+  <!-- Advantages (Cards) -->
+  <section>
+    <div class="container">
+      <div class="grid-3 card-3">
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-rocket"></i></div>
+          <h3 class="card-title">Schnelle Produktion</h3>
+          <p class="card-text">Von der Datei bis zum fertigen Produkt in Rekordzeit.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-palette"></i></div>
+          <h3 class="card-title">Farbtreue</h3>
+          <p class="card-text">Hochwertige Farbmanagement-Systeme garantieren exakte Ergebnisse.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-headers"></i></div>
+          <h3 class="card-title">Kreativität</h3>
+          <p class="card-text">Individuelle Designs, die Ihre Botschaft stark machen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section>
+    <div class="container">
+      <h2 style="text-align:center;margin-bottom:48px;">Unsere Leistungen</h2>
+      <div class="grid-3 services-grid">
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-file-alt"></i></div>
+          <h3 class="card-title">Offsetdruck</h3>
+          <p class="card-text">Hohe Qualität bei großen Auflagen.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-print"></i></div>
+          <h3 class="card-title">Digitaldruck</h3>
+          <p class="card-text">Kurzfristige Aufträge ohne Qualitätsverlust.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-book"></i></div>
+          <h3 class="card-title">Buchbindung</h3>
+          <p class="card-text">Professionelle Bindungen für jedes Format.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon"><i class="fas fa-shopping-bag"></i></div>
+          <h3 class="card-title">Logodesign</h3>
+          <p class="card-text">Einzigartige Markenidentitäten.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process Steps -->
+  <section>
+    <div class="container">
+      <h2 style="text-align:center;margin-bottom:64px;">Unser Ablauf</h2>
+      <div class="grid-3">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3 class="step-title">Planung</h3>
+          <p class="step-desc">Ihre Anforderungen analysieren und Konzepte erstellen.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</h3>Design &amp; Produktion</h3>
+          <p class="step-desc">Kreative Umsetzung und hochmoderne Drucktechnik.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3 class="step-title">Auslieferung</h3>
+          <p class="step-desc">Schnelle, sichere Zustellung an Ihren Standort.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <div class="container">
+      <h2 style="text-align:center;margin-bottom:64px;">Häufige Fragen</h2>
+      <div class="faq-item">
+        <div class="faq-question">Wie lange dauert die Produktion?</div>
+        <div class="faq-answer">Die durchschnittliche Produktionszeit beträgt 5–7 Werktage, abhängig von der Auflage.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Welche Materialien können verwendet werden?</div>
+        <div class="faq-answer">Wir bieten eine breite Palette an Papier- und Kunststoffen, von 135 g bis 300 g.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Bieten Sie Versandoptionen an?</div>
+        <div class="faq-answer">Ja, wir liefern weltweit mit zuverlässigen Kurierdiensten.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question">Gibt es Rabatte für Großaufträge?</div>
+        <div class="faq-answer">Selbstverständlich – je nach Menge und Projekt erhalten Sie Sonderkonditionen.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="container">
+      <h2>Bereit für Ihren nächsten Druckauftrag?</h2>
+      <button class="btn-primary">Jetzt Anfragen</button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Pinguin Druck | <a href="#">Impressum</a> | <a href="#">Datenschutz</a></p>
+    </div>
+  </footer>
+
+<div id="wz-banner" style="
+  position:fixed; bottom:0; left:0; right:0;
+  background:#000;
+  color:#fff;
+  padding:0;
+  z-index:99999;
+  box-shadow: 0 -4px 30px rgba(255,106,0,0.2);
+  font-family: system-ui, -apple-system, sans-serif;
+  border-top: 2px solid #ff6a00;
+">
+  <!-- Hauptbereich -->
+  <div style="
+    max-width:1200px;
+    margin:0 auto;
+    padding:20px 24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
+    flex-wrap:wrap;
+  ">
+    <!-- Links: Logo + Badge + Text -->
+    <div style="flex:1; min-width:320px; display:flex; align-items:center; gap:16px;">
+      
+      <!-- AgentFlow Logo -->
+      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wgARCAIAAgADASIAAhEBAxEB/8QAGwABAAMBAQEBAAAAAAAAAAAAAAUGBwQCAwH/xAAZAQEAAwEBAAAAAAAAAAAAAAAAAgQFAQP/2gAMAwEAAhADEAAAAb+AAR5IR+d1U0KvV0dnL5AAAAAAAAAAAAAAAAAAAAHrt4BabPl43r64Vfy7Pz9AAABRTszT4gAAAAAAAAAAAAAAAAAAAAAAAAACf1TDJA29HyAAI8gcu+3xAAAAAAAAAAAAAAAAAAAAAAAAAAAAJLZMJsprQGV6JiJ+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA1K24htpRM9sVdAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGr5Rbiu8fryAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJGO9ngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlyIaFYzIJbYv0zGQvwpvTaRXPdgFf8WMVbmuQoMfpwx2I3n8MBbNWzPUxDgAAAAAAAAAAAAAAAAAAkyMtN4niEmwAPyKJZUo4vzM+U1Zkfg19kHs1xlPUaYoMiW1Eyp+gQs0Mpq2/wJjyTjAAAAAAAAAAAAAAAAWQ/dU+noHg9/Ok0Q0iq1cff4AAAAAAA+/wFotWWje/phV7L08ez45XrXkwJZK2AAAAAAAAAAAAAAd+0V60gjz8ynk4gAAAAAAAAAAACX1fEew3NHyBz4vuFWMpAAAAAAAAAAAAAlIvQC/g/MdveUAAAAAAAAAAAAAAE5sWA6uWgGKRegZ+AAAAAAAAAAAANgx/dDrBlVV7+AAAAAAAAAAAAAAAWqq95uAIDH90wsAAAAAAAAAAAAb7gW/gGBeQAAAAAAAAAAAAAAevI38HnAt/wAAAAAAAAAAAAAb/gG/gGAAAPdx8veCl5pR04z4TSM6dEaRF2KlLe/FzNDoAe+PEvOylPShfvJq9uFiLilDN10p17M8D18AN/AwDf8AAAAAAAAAAAAAG/4Bv4BgAB2c7Y5kyd8Iz9znNOXM6Mg7fBlQqGkUPseMXM8Bb65fKegFLTe/EtPz6Umv5NQg7fE0tPN3Zx6eIHeb+BgG/4AAAAAAAAAAAAAN/wDfwDAAJ+AsXjYswzNsDtslO+9ipaq38fgKtaazztdGljAT9prNmzdkPC07eJ2NxVVbz/ALcRU0KtAWKu6WMHtX38DAN/wAAAAAAAAAAAAAb/AIBv4BgAEvEe4T0V8Pvk74OgAKdaqDboeBeywJe451fqOp9xUvgAD4OVWI9+NbACcN/AwDf8AAAAAAAAAAAAAG/4Bv4BgAAJW45zI1bt3cPdR1A5J55Kt7VvcUaOOEogJWKRlo3qkWnO2O4eNkcXY9dO8Rt7LC1SA38DAN/wAAAAAAAAAAAAAb/gG/gGAAAAdXK52R+HKjIJwAAAAA6vvHIT6uUlEO8AA38DAN/wAAAAAAAAAAAAAb/gG/gGAAAAAAAAAAAAAAAAA38DAN/wAAAAAAAAAAAAAb/gG/gGAAAAAAAAAAAAAAAAA38DAN/wAAAAAAAAAAAAAb/gG/gGAAAAAAAAAAAAAAAAA38DAN/wAAAAAAAAAAAAAb/gG4HecBh4AAAAAAAAAAAAAAAN/cHeMA3DDwAAAAAAAAAAABJxgvlWjAAAAAAAAAAAAAAAABJ2mhiTjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA9+JGOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHrz2FiqOr5QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALFXdDL1iW31Iy0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAH7t2d6oAZLWt2xsjQAAAAAAAAAAAAAAAAAAAAAAAAAAAPt8dSJ2QABHyAxCP3TKiAAAAAAAAAAAAAAAAAAAAAAAAAAAfbSzjvQAAAPz9FJoG6/IwVqFYKs7+I8gAAAAAAAAAAAAAAAAAAAPXUcaxWEz21aJIEfIAAB//EACwQAAEDAgUDBAIDAQEAAAAAAAQBAgMABQYQEyBQEhRAERUwMSIjFiFwYJD/2gAIAQEAAQUC3kHDCVPiRtS3s6SnlkyUrlXiUc5KYaVHUN/NjofEI0lRyMlZ8hRsAbDL6RPSr6ryEBMwzwb+ySkVFT4bnemi1LK+aTlLfdZgXDExFw77xeOjmAzJQpgzIjYNt6ufas5kIyQEgeeMmDM0poYssr5peas9w7MjO+mdwXzliO7gajiO0CVfVecBJUMtFRzcST/jz1iJ17fe5dS6c9h6boPLfqGc8BJpXBV9Xc81el/+MMiklWOznyUzDhS03DSU3DgtJh8FK9iAr2S317Jb69iApcPgrTsOC07DSU/DhSVJZz46fFJEvGj2wsqoMNpUNpChpERqfMqI5JrSFPU+G0oi1li8SHYiSKFtQgnjlWoQujLEQPwoYM50gNpHC3KqIklzCip+IQ20/EtOxITS4gNWvfT697uFe93CvfT6TEBqU3EhNMxLTMQhuqO5hS0ioqbTrSObRgM4MnA2y0vNdFFHBHm+RkbSMQCxVPfjJakmlmX5o5pYVgvxkVD4gFlpkjJW5yxRzx3O0vCXz7TbFOla1GNyc5rGm4ha2pyZiX+JATMM8LELXU1zXtyc1Htu1sUGXzQxXmEwwsHhyMNiChOuM5z/ACAbjOC8M2I2HKaFhEJgrwyfMsYXbCZGFxhDlFSlz+UKVKJOGXGaPlfAu5D8u3Dd2dl9JdDlOK8y1nKCV9plcBu0O8rDcGd9K0AfOsRWuDliSDy7LFp2vK/zalx86wTadxyvUepa/KFb0CZGv1DvOCfpnZFN6w/KT+m5OX1d5zV9HZO/tv8A0cNvlkptshSuwGp1shWprfLH8cNvlkptshSuwGp1shWprfLHxbGOe4UNkCbSg2To9jmO3MY57hQ2QJtKDZOj2OY7iABtKPNrVe5gTER4TFRzVY48bVj3ADaUebWq9zAmIjwmKjmqxx42rHw4sWsRsBT8sjk/KiotEjYLFrEbAU/LI5PyoqLRI4a1t/bsGl0pMiZdWSro39uy1t/bsGl0pMiZdWSro39vDWr72smkZT5pH53X72Wr72smkZT5pH53X74a2v6SfhuT+orZbX9JPw3J/UVwzXKx0UiSxb5ZEhic5Xu2NcrHRSJLFvlkSGJzle7hwitB6KiptVURDStd+4IrQeioqbVVEQ0rXfxIxjx6iKhm2TFRQ0SY8j4RjHj1EVDNsmKihokx5HGtImZXfE04iZ/ytImZXfE04iZ//hKES0sSjSWiicAES0sSjSWiieUGfOC/+Su6TD5zn8AGfOC/+Su6TD5zn/6a5Ol/PNT1cfHpXDnhGahmIYeg/nrJFqXS+ja9v57DcHoxURzThlDL5xE9VBH7UOr6D3A3OWIPXLzvFu7MjmoonzShCtDFzIgjJgNCkBI5my2ztY9pgcRsBgcoU3L2ez9HwEjRFw3C1TArykUT5pLZZWi/EqIqHWBklTjTDP5BEVVDsRE9ChQBs+SSNkrCMPDS1NYDY6eCVHStcnEo1VpghMlRWQ6SoMNtShwRhfg//8QAJxEAAQMDAgUFAQAAAAAAAAAAAQACAwQREhAxICIzQEETIUJxgBT/2gAIAQMBAT8B/ZUMDpT7JlJE3xdGCI/FTUXmPhhovMiEEY+KfSRO8WU0Doj79o1uRsFGwMbiNKqdwdi1Us7i7Fyrorc41oYr850lfgwuXryXvdC08Xv5ThibHs6XrDWem9Q5BQU3pnIqs6J1o+iNHNDhYr+J1901oaLBVXWPZxvwcHIG4uOCuk5cNaGTlw4CbC5Uj83F3aU1Vhyu2TXBwuNJqlkf2nvL3ZHVjyx2QUNSyT70c4NFyqmqz5W7dsCRsjI87njEjxsUSTv+jP/EACcRAAEDAwIGAwEBAAAAAAAAAAEAAgMEERIQIRMgMTNAQUJRgBQi/9oACAECAQE/Af2VJKGJ1Q8riv8AtR1Pp/LJU+mLiv8AtNqHhRyh/iE2F05xcbnSCIEZFTxADIKlf8dap/x0Y3J1lwmWtZG8T9kDcX8OftnWKbDYqWbPYKn7g1qO4dGnE3C/pFuiccjcqDtjw3tybZHbkpW75a1Td8uQbpjcW28SaDLdqII66RwuemtDRYauaHCxUkLmaAE9FDBj/p3jEA9Vg0eufBp9IADp+jP/xAA9EAABAgIFBwsDAwQDAQAAAAABAgMAESEiMUFRBBASIFBhcRMjMDIzQFJigZGhQnKCkqKxNENw8GCQwdH/2gAIAQEABj8C1+edAOF8Sydie9cdqEDyiK77p4qMUk7JoJEVModH5RXKXB5hEnkqaPuI0m1BScQel0nlywF5gpZ5lG62Jm3aOky4UHdARlQ0FeMWRMGY6ItMSW9ebkwVuKKlG87V0euzeg/+QHGlTH8dAcmyZVb61i7dtjlGjxTjAcbPEYa3INHnlWnwjbQcRZ9ScRCXWzNKtRTyrrBiYU4szUozO29BZ5ldu7fqcik1GqPXbvILPONfIzOPXgUcYmbduoeFgt4QFCkGGcnF9Y7fCD1mjo+l0OYIknb5aucT8iHl4rO32F+cQTt8HA/4Zk2hSz5ROKMnI+6iK7jSfmK+VeyIrOun2ixw/lHZH9ZjsP3mOw/eY7I/rMWOD8oquuj2iplXuiKrjSviOwJ+0ziTiFIPmEtnTbZOj4lUCJ5Q/wCiIqsJJxVTEgJDp5ETEVmEg4poieTv+i4mtolPiTSNkhTnMo32+0TS3pL8S6e7zU3or8SaDBU1zyN1vtsXRaTReo2CNKWm74zrTJkIrZSj0piqHF8BFTJvdcVWWhxnH9sfjHaj9Ijt/wBgjt/2CO1H6RH9s/jFZlo8JxXyb2XFYOI4iKuUo9aImDMa05aDvjEaLqaLlCw7C5Rc0sC/xQG20hKRcNTSWoJTiTEmgXTuoEVCloeURN1xS/uM+nm04pH2mUVyl0eYRJ0KaPuI0m1BScQdQtupCkm4xyiJqYN/h2BproYTbv3QEpEkiwDOVKISkWkwUZInSPjVZGk84Vnf3XSZcUg7oCMrTonxpsgKQQpJsIzlKhNJtBjTRSwqzdu78llN9pwEJabEkpz6bp4JvMVzJFyBZ3moZovQbI02jxTeM6mnBNKoUyu6w4jvvKqHOO0+mcuuegxMF100/wAd7DrRkf5gOt+owOflUjnGqfTvjbX0zmrhnnBI7JNCB30E9kqhY1HGvpnNPDvb2UH7B/vtn5NPWdq+l/f+TUazVX0uzs5QPsP++/e2sVVs+hc2mXf9C5xMs7uKa3e2U4IAzvrxWe/sLwWM7ycUEd7Azk9/Bzkf8kmqoN8VipUdn8mKpUmJprjd0c1VBvisVKjs/kxVKkxNNcbtlhKRMmJmlzHWmKrmMFKhIjXCUiZMTNLmOtMVXMYKVCRGyeUV11fGoEi2K9YxUqmCk2xyieun51+UV11fGoEi2K9YxUqmCk2xyieun52QlN1+qo50nHMtN12qlN1+qo50nHMtN12x1qwGrTYc9FgzIViNVasBq02HPRYMyFYjY7vprVVGKyjna9dV301qqjFZRzteux5eIS6KXhEtWXiEuil4RLY4ULRAWL+gUs3QVG06oULRAWL+gUs3QVG07I0VdQ/ETFmtM2Rop6g+dfRV1D8RMWa0zZGinqD52VLrIwiqqnA6lZVOAiXVRh0MusjCKqqcDqVlU4CJdVGGzariveO0+BFZxXv0tVxXvHafAis4r3/6JW3Um0U8czjqjYKOOwW3Um0U8czjqjYKOPe5tKoNqTYY/pRpY6cTdVQLEiwbBm0qg2pNhj+lGljpxN1VAsSLB/k4jA7fAh9HnO32EYrEB25xPyNvt4ImqNMCs0dL0v2+8+b6ogpImDC2TYDRw27IWw2zeBTxzcugc418jbvLKFRqn11NNA5ldm7dttLaBNSjIQllN1pxOoppwTSqC2uz6VYjbXLujnlWDwjWLbg4HCOTcHBVx2wMpylNb6EG7oC26mY/iNLrs3L/APu1QhtJUo3CA6/Jb1wuT0UjSIK8lOgrwGyNB5spO0ZC2Ap7mUb7Y0WUSxN56XRcSFJwIibKlNH3EVAlweUxXyd0fjFII2TQDFTJ3TwSY7IIHmMTffnuRHMtJBxv6D//xAAtEAEAAAMFBwUBAQEBAQAAAAABABEhMUFRcZEQIFBhgaHRMECxwfDh8XBgkP/aAAgBAQABPyHfIydroINNHNy7HmLHwAzvbsRVaYzeE9hxjT0nlpCgZGXUhkxj+63tA5usmj1ZTibGuQRrqVfW7pCMiq1eI4ykmo5l8S9rItOeEAxITEv9JK7i08jFpnZOKgJlGos+kTY3aXrB9CZwh2Bz4wPzNYcGOUme14O9cPaH4nxpw52LiKSmGnJ3KujRpBCJ54cbe23Ln7jzo1/xx2cTQUn0dLNNg+SdQhGSaZq8dm2TJHG9DogpiXkS2LSfY++Pzhz/AAHbpErzoBpXuvH59NVTqfE45zfvx+sUpE5LJjnAz4/LO4f+M8oGLCoh4o+cVnkM1fEX4eX9oF2JH1FoZiAN/n5I/fyx+/lhW7y8kWBkIK7kr6i/By/tFRzxV8RVUuIfCscoGLw5LgF+Bt6QOSHE/t8RI0V+c4MCC4Jeu4ElyTiZflOyHzQOHPueInQx+Qs68ICbIgGrcNf5jEsEXOfz28wGn7L+sWGnDT+YQkmTbwSxAxgEGKGzIu3kQgvWJ/Wlz+sW73JDuwN68/5Qj5A+4spyP6hW5y8Ufv4Y/fwwDe5+KLacz+oB8AfcDenP+UW73JTsxL61uf3gEJLx3gV4Ibcy+LUDwLBKalb3IeYszb7gzPrZIic4r/IfETczCOrE8GxX108GxWEnMgjqQ4Pd78h4gi3WTRuW5l4Gc1KXuR88AkBU148EHXLIFA2m3CaJBDIFhK7C+MxSKGRd7XMECjmXwgBYSu4ug2oTRMdp1yyBMSJAVNePF76m7a1hiXLUg22mrZWvKLFO4Z5fczVO2uq8MW2pbWvPbKlqSRXctaQ+9lNEGS6fe2udcduFExS7C4YHu5CltLhgw50rntwts4ohzXz795NImugVYACRQ2KImQWrDlOiMevvXKdEY9IEBGY2JsQSSTGJREh1Cp7ukDBe7tPPJP8Ah26+/euH/Dt020gYr3Pdszq6viW2floutq/Jp7+XtqusqfDrtyejo+J+7/f8bcuHlOnv8+HlOu393x7s8gJbeZjP3/I5HaOYEv8A0dsDkjXaQTUM5EUrX65wTUM5kDsjXaRYyfRtgcka7SCahnIila/XOCahnMgdka7SLGTwpGypBAqXfYMt5UZcYs4mNlJN9GypBAqXfYMt5UZcYs4mNlJOEkIUdG4dM1FbHMkRbZcVmQcMhBKFHRvkIUdG4dM1FbHMkRbZcVmQcMhBKFHRwic5ankN02/gBtMv4R2SlLU8juznLU8hum38ANpl/COyUpankeDzsEmv+bpZPeUCJMZkKBNZEFk857JWKTT/AHdnYJNf83Sye8oESYzIUCayILJ5z2SsUmn+8HdLl9t4GQjCAZKMNrpcvpuuly+28DIRhAMlGG10uX04PV9jdVvpUbYXVbu1fY3Vb6VG2F1W8HY+SzIs9xp6FnGNYY+azd1j5LMiz3GnoWcY1hj5rN4Rix15sYBIKqJvIkAVVjox82O/ix15sYBIKqJvIkAVVjox82PCktRuyg0kmWdwdkueYS0m/P0UtRuyg0kmWdwdkueYS0m/PhpshGFRFK3+OUGyUYUHqmyEYVEUrf45QbJRhQf/AAlAosg4XjYDQZBxuHAQKLIOF42A0GQcbh7tIbmWCz9kaSgIbkXgIkNzLBZ+yNJQENyL/wBOJ53hx/mQyikUpMZLM4/yk/eJdFEz6HxLj87SoJpL5SJxPfgO/Tj8sVofKr9QaIUkbyJtlQ8bnHUIFTICB886r32SiaCsurpbrx3z613zuNbfnz+NqCfCKutrWHckpxpzIIOdq441XB2p+J73MTHa8SF9FdWOJxhHjHuDz9CbG7G9YkOQKNAs+nFbDOwRiXFp5H0kQCURvhcZ6tpywjCY0yjk38RBAqsCH+gVfS7rErhNrXMfVXN1s0Qw4R/Q17wouRl0Y1tJ5ax3XDhNprI2IKtfEjO1sOCuSl3fEE91dT6H/9oADAMBAAIAAwAAABDzzygCAAAAAAAAAAAAAAAAAAAADBDjTzzziAAAAAAAAAAAAAAAAAAAAAAAAAABTTzyAAAAAAAAAAAAAAAAAAAAAAAAAAAAATSAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQRQzwwzwwgAAAAAAAAAAAAAAAAAAAACzzzDjzzzzTjyzwAAAAAAAAAAAAAAAASTzSAAAAAAAAABDxggAAAAAAAAAAAAADzyAAAAAAAAAAAADTzwAAAAAAAAAAAAARyAAAAAAAAAAAAAABCwgAAAAAAAAAAAADwAAAAAAAAAAAAAAADwAAAAAAAAAAAABTyAAAAAAAAAAAAAABDygAAAAAAAAAAABTwABgIFAsAAeAEKQADygAAAAAAAAAAABTwAWABmGYABoATFAkDygAAAAAAAAAAABTwAYABCAUAAkALMIoDygAAAAAAAAAAABTwBIsAABgACQAAAeIDygAAAAAAAAAAABTwABckBEEAAG0AGMADygAAAAAAAAAAABTwAAAAMAAAAAAMAAADygAAAAAAAAAAABTwAAAAAAAAAAAAAAADygAAAAAAAAAAABTwAAAAAAAAAAAAAAADygAAAAAAAAAAABTwAAAAAAAAAAAAAAADygAAAAAAAAAAABDgAAAAAAAAAAAAAAADSAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAjzzyQAAAAAAAAAAAAAAAAAAAAAAAAABRzzzzzwwwAAAAAAAAAAAAAAAAAAAAQATzzz/xAAnEQEAAQEGBQUBAAAAAAAAAAABEQAQITFRYYFAQZGx0SCAoeHwwf/aAAgBAwEBPxD3lRq4GLQN8mv6KEhHSKGHoeKRGG0FYKGDoeaGgHSaBuk0/RXPQcHhEHGbqFYJZJaAqS0jQI51zaCeVcWaEVz3/OmFREcHzSrjF3BkZdezbfDDV8MtAZNO9oCDXvY7wmsoj5/b0bwiiEOnY4PSRoAwH0EAYt+1pKWJft6ATAK1keEg7Zy+qkjJYCkzk85U0W9tKLeUDExk8Z2SRgqDvnP64Z2VFCQru+sSFN2nZU+4z//EACMRAQACAAUEAwEAAAAAAAAAAAEAERAhMUFRIECRsXGAofD/2gAIAQIBAT8Q+5ReebxG8mviAtji3+kESzFQLYt/pFW1xvNv5heWTx2hsto73sKK3corVRUXtpioB31wruc2hPgUIhv2bSj+zxrVWStVRG+T1i3wesFDUJzlxU1GNbP7Ps7DnAqnoVa0MVCNHoCqJQce0u73uO0KcFLqjmEtIxZaTFLqznB2hbLu567YChcFWDx1qrR4gFCvsZ//xAAtEAEAAQIEBQMFAQADAQAAAAABEQAhMUFRYXGBkaGxECBQMEDB4fDRYHDxkP/aAAgBAQABPxD3vbHkafrPPCkdI4rvKclLoy/fE91ILK5KOkxSCuuaPxLorGC54p0gTKvUYoEWxAi2h7jTaRZeLwEOzesAf7NzPqx9A/3ZuwGbS8lWBmPf/JxaSGkolXVfkR/+ehSw2RpRyxiTsx47nCjWWXkDgiYn0o4hcXe/gwM9KWbczy/4bFj5V9dyAqzbYPejT2SWzgZP8SfQaLr2ude5ywL4Kqqyufy9gYwM4c8OJUJRxbe/gcz3OsOSm757LLQvpSqqsri/MrMaEMZgd9HJ5lXV6E4rMMkbPsjfBf4//o7C0xoyc18GQZHzYhIORtgg2ydr5FCIIyOCerLPZQNs/wAvB1+dWJUGr4K44m270nETAudp6pyGkutISq4r86p6hvPselzcKOWPDkJE5UnTEQ/K9Pz7XBbOMrrhE0MRLkWH58Fiko1WH850iTMPwXHb59zoEuw7C0zTK6eL8+ySEHkz/wBM7/YB0BokQdHckPagwI5DOgO9GBSzAd1+KhZfbXvr+gfgFY1/E4UBxbxrq4M4V8K/icaf0D8RqVl9tO2nC6FI7h8UciTJZykd6MRfVfJeFb/4B0Q+OKwjsO1G4cDRDHop+bop/UGWusTDkFYFfDA5H18Svhg8mikmyVjrhHmNBZBoZ5ZHVWNTThWq3DgPiEAFVgDOs5FS6O1kcxwa2LApdS0cgfbnaUnJqxbkNHZhTCO+bq4FIgIGEcT4THDQsD3c3YvUVsLNK6Xnv7r7CEQHNpkIxFo5FqaMmKrmD2oammQuw/NPsXsXsKl+t/lVh/8AV40VwJwrg4l418f/AKvCkP0v8CnyL2L3VLQ1yV2T5qKM2Irmj2pkAwFp5Eq+wgEjzPcV9CzSuke+9Y4alwezk7N/greJBsxjs65N3AU5QSDi6rmt32A+GRC5tOC/Iv8AAl5I3phWWC07yX3Iq955IBwlt9e955ZBxhvTAsslp2gvuzXGUM/AnqDesO7LNzPYKUoJJxNEyS5Vvsi3Zw2dM2zj9/hzxLONJ5cjdoNEYgDAD1jxyODVWxQRmqQDv8TBs00y96CFhsB9qGlknouANkadMrEK7/ETwKjwyODUTH1TRCYBiJmVjzxLuPJ4czc++kPksZCxPxqoZ0TQ/POquasq6vq2xwRXQDy4FOlp5PBXyPKMPuSaZ5LdTyHOcKHYSG8ANNHB9TaP540TRGEdSpjpLGBsD86ImX3owo5kv+amXE09XQsvEIwH5cgawk1O2XDIP23+7wExfjyzH9l6u4F4kGK/DmJ6hIhmC/4oIcHX7yT6yP6iYjilAgAIAIA9DhCVEAGbUlsOWuvHVE8IMvvUtkMtdYmsp4SZ0YYQokRzPREAEIkiVP8AXBz6xExxH7s8cL0Dz+pFJQQ3CSuiffgKAilusldB9TPwPVPu8FtAb+SOz1LIhIMIpux9+eBGQ4RTdj1HbTwPBPd92E0gguBPVXmR3MnYH36nMDuROxfU2SSC4s+7t1EPQerpsrp4v37gsJjwfWz0y9R/yMFACrYCpYxmZZ/M4opqyT0AnvWGua1HmjIHQSe9QxjGMH+aTSKAiWRy+iCgBVsBUsYzMs/mcUU1ZJ6AT3rDXNajzRkDoJPeoYxjGD/NJpFARLI5fFQORDOhOUXSTb/rH3CcBZINv+sfFI4khl74HIhnQnKLpJt/1j7hOAskG3/WPikcSQy+JxGIJxyTi4vLT2SIzAUFUuMIOEXpKqLiScZvUjMwlYjEMY5pxMTn78RiCcck4uLy09kiMwFBVLjCDhF6Sqi4knGb1IzMJWIxDGOacTE5/EBLVr5ic8OdYexbh14WfHqNw6UJHmsaCErXzA5YcvaEtWvmJzw51h7FuHXhZ8eo3DpQkeaxoIStfMDlhy+HJsuDzT7UtUFP2P8Aa0CAhIjIlIgASqwBUtUlP3P9p6EWXR5p9omy4PNPtS1QU/Y/2tAgISIyJSIAEqsAVLVJT9z/AGnoRZdHmn4cJm1Tl+3u6izHRtXQXY6FvUXNivP9PaJm1Tl+3u6izHRtXQXY6FvUXNivP9PhwloCTos8PX6QI0pI1XeTp7QloCTos8PX6QI0pI1XeTp8PHwV9xmlVxyasx4P0FBxwasg4tS8FfdZ9sfBX3GaVXHJqzHg/QUHHBqyDi1LwV91n4hWVd92H5/VG/WQkTUfcb9VCANWkJUfbuPx+/erKu+7D8/qjfrISJqPuN+qhAGrSEqPt3H4/fxRrGt26ll4owRZ93Yz5T7Bwlh43LnFOsCyN1LPx9E1jW7dSy8UYIs+7sZ8p9g4Sw8blzinWBZG6ln4+NOB2CQcm1Ya1UeJ2ISci31TgdgkHJtWGtVHidiEnIt/8JSADA3MhufaHP0ZANDdyC59pcvgSADA3MhufaHP0ZANDdyC59pcvu7b5QrPUydxGtsWZf1e9X3yhXehm7qvwNt8oVnqZO4jW2LMv6ver75QrvQzd1X/ALOQJCjyY+fQclMHFp3oCu47CfPoITL8Ez2pYxaark/nH5925ci4KD2IbBeVhwiPnxMRdDLsZemnlDw5CEeVCcpTz7vpZ3H50L6gJVcAo3BGUZ3nqeUeizqiRfFHHA23fOtfrAUtl+Xga+qCIkjiNIFC4C2KrybWyfm2PDBzXwGK5FRvIQyJ/wDwNAD2WVyOqyTJG5TRGkRGQTfUyeT8yCoBK4BT2lDDd8tlnoW190ZRwba/kM6vn0pOLPJifLgqASuAVCuEFcp9hli3w95p7sLZRMn+ZK3PjC4Azb4Pb5Vb9xPLvsbtimhAgN3t5MDLX6RnxQpA4iZ1j7cCbdjw3OFLpf8AKQsNx+RQusAlXQKFNW8THt/k4NRrp/dnAg0Pq4A/2bk00kXDj8SHKG1Ei2CEW8PZaZQE1vQIplFjEc8/EoAy5I0gEjmo6xFPiw/XE9lakLj+8pyUfIHCyfjM8pj6H//Z" style="height:44px; width:44px; border-radius:10px; flex-shrink:0; object-fit:cover;" alt="AgentFlow">
+      
+      <!-- KI Demo Badge -->
+      <div style="
+        background:#111;
+        border: 2px solid #ff6a00;
+        border-radius:10px;
+        padding:10px 14px;
+        text-align:center;
+        flex-shrink:0;
+      ">
+        <div style="font-size:9px; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1px;">KI-generiert</div>
+        <div style="font-size:14px; font-weight:800; color:#ff6a00; margin-top:2px;">DEMO</div>
+      </div>
+      
+      <!-- Haupttext -->
+      <div>
+        <div style="font-size:16px; font-weight:800; color:#fff; line-height:1.3; margin-bottom:6px;">
+          Diese Seite wurde <span style="color:#ff6a00;">automatisch erstellt</span> – in Sekunden.
+        </div>
+        <div style="font-size:13px; color:rgba(255,255,255,0.7); line-height:1.5;">
+          Unsere echten Projekte sind <span style="color:#fff; font-weight:600;">individuell designed</span>: 
+          <span style="color:#ff6a00;">Website</span> · 
+          <span style="color:#ff6a00;">App</span> · 
+          <span style="color:#ff6a00;">Verwaltung</span> · 
+          <span style="color:#ff6a00;">Automatisierungen</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rechts: Buttons -->
+    <div style="display:flex; gap:12px; align-items:center; flex-shrink:0;">
+      
+      <!-- Primary CTA -->
+      <a href="https://calendly.com/agentflowm/15min" target="_blank" rel="noopener" style="
+        padding:14px 28px;
+        background:#ff6a00;
+        color:#fff;
+        text-decoration:none;
+        border-radius:8px;
+        font-weight:700;
+        font-size:14px;
+        box-shadow: 0 4px 20px rgba(255,106,0,0.5);
+        white-space:nowrap;
+        border:none;
+      ">Premium-Website anfragen</a>
+
+      <!-- Secondary -->
+      <a href="https://www.agentflowm.de" target="_blank" rel="noopener" style="
+        padding:14px 20px;
+        background:transparent;
+        color:#fff;
+        text-decoration:none;
+        border-radius:8px;
+        font-weight:600;
+        font-size:14px;
+        border: 2px solid rgba(255,255,255,0.3);
+        white-space:nowrap;
+      ">Echte Projekte ansehen</a>
+      
+    </div>
+  </div>
+  
+  <!-- Footer-Zeile -->
+  <div style="
+    background:#111;
+    padding:12px 24px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  ">
+    <div style="
+      max-width:1200px;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:16px;
+    ">
+      <!-- Links: Branding -->
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="font-size:12px; color:rgba(255,255,255,0.5);">Erstellt von</span>
+        <span style="font-size:13px; font-weight:800; color:#ff6a00;">AgentFlow</span>
+        <span style="font-size:11px; color:rgba(255,255,255,0.4);">– Webseiten & Systeme aus Berlin</span>
+      </div>
+      
+      <!-- Rechts: Trust Points -->
+      <div style="display:flex; align-items:center; gap:20px; font-size:12px;">
+        <span style="color:rgba(255,255,255,0.6);">
+          <span style="color:#ff6a00;">✓</span> Festpreise
+        </span>
+        <span style="color:rgba(255,255,255,0.6);">
+          <span style="color:#ff6a00;">✓</span> In 7 Tagen live
+        </span>
+        <span style="color:rgba(255,255,255,0.6);">
+          <span style="color:#ff6a00;">✓</span> Next-Gen Systeme
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="wz-banner-spacer" style="height:130px"></div>
+
+</body>
+</html>
